@@ -40,12 +40,12 @@ function PLUGIN:Call( ply, args )
 end
 
 function PLUGIN:PlayerInitialSpawn(ply)
-	pl:SetNWBool( "EV_GodMode", true ) 
+	ply:SetNWBool( "EV_GodMode", true ) 
 	ply:GodEnable()
 end
 
 function PLUGIN:PlayerSpawn( ply )
-	if ply.EV_PVPMode then
+	if ply:GetNWBool( "EV_PVPMode", false ) then
 		ply:GodDisable()
 		pl:SetNWBool( "EV_GodMode", false ) 
 	end
