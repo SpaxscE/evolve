@@ -13,7 +13,7 @@ PLUGIN.Privileges = { "Client Exec" }
 function PLUGIN:Call( ply, args )
 	if ( ply:EV_HasPrivilege( "Client Exec" ) ) then
 		local players = evolve:FindPlayer( args[1] )
-		
+	
 		if ( #players < 2 or !players[1] ) then			
 			if ( #players > 0 ) then
 				local command = table.concat( args, " ", 2 )
