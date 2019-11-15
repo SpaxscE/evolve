@@ -112,7 +112,7 @@ function PLUGIN:DrawInfoBar()
 	
 	// Content
 	local x = self.X + 24
-	local y = self.Y + 118
+	local y = self.Y + 117
 	draw.SimpleText( "Currently playing ", "Default", x, y, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
 	x = x + self:QuickTextSize( "Default", "Currently playing " )
 	draw.SimpleText( GAMEMODE.Name, "DefaultBold", x, y, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
@@ -145,7 +145,7 @@ function PLUGIN:DrawUsergroup( playerinfo, usergroup, title, icon, y )
 	surface.SetMaterial( icon )
 	surface.SetDrawColor( 255, 255, 255, 255 )
 	surface.DrawTexturedRect( self.X + 15, y + 4, 14, 14 )
-	draw.SimpleText( title, "DefaultBold", self.X + 40, y + 6, Color( 39, 39, 39, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
+	draw.SimpleText( title, "DefaultBold", self.X + 40, y + 4, Color( 39, 39, 39, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
 	
 	self:DrawTexturedRect( self.TexPing, self.X + self.Width - 50, y + 4, 14, 14 )
 	self:DrawTexturedRect( self.TexPlaytime, self.X + self.Width - 100,  y + 4, 14, 14 )
