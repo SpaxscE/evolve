@@ -58,12 +58,28 @@ function PLUGIN:PlayerNoClip( ply, desiredNoClipState )
 
 		if PVP then 
 			if SERVER then
-				ply:PrintMessage( HUD_PRINTTALK, "Noclip is restricted in PVP-Mode. Join Buildmode using !pvp "..ply:GetName().." 0")
+				ply:PrintMessage( HUD_PRINTTALK, "Noclip is restricted in PVP-Mode. Join Buildmode by using !pvp "..ply:GetName().." 0")
 			end
 			return false
 		end
 	end
 end
+
+local hide = {
+	["CHudHealth"] = true,
+	["CHudBattery"] = true
+}
+
+function PLUGIN:HUDShouldDraw( name )
+	local ply = LocalPlayer()
+	
+	local PVP = ply:GetNWBool( "EV_PVPMode", false ) 
+	
+	if PVP then return end
+	
+	if hide[ name ] then return false end
+end
+
 
 function PLUGIN:Menu( arg, players )
 	if ( arg ) then
