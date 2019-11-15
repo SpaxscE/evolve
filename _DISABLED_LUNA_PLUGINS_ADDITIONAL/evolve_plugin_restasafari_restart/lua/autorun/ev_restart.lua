@@ -2,9 +2,9 @@ if SERVER then
 	util.AddNetworkString("GetServerDeadTime")
 	
 	net.Receive( "GetServerDeadTime", function( len, ply )
-		local TimeDead = {Hour = 5, Min = 0, Sec = 0}
+		local TimeDead = 18000
 		local Time = os.time()
-		local ServerDeadTime = CurTime() + (TimeDead.Hour - os.date( "%H", Time )) * 360 + (TimeDead.Min - os.date( "%M", Time )) * 60 + (TimeDead.Sec - os.date( "%S", Time ))
+		local ServerDeadTime = CurTime() + (TimeDead - (os.date( "%H", Time ) * 360 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )))
 		
 		net.Start("GetServerDeadTime")
 			net.WriteFloat( ServerDeadTime )
@@ -107,11 +107,10 @@ hook.Add("HUDPaint", "restart_message", function()
 	
 	if not OnFirst then
 		OnFirst = true
-		timer.Simple( 60, function() 
-			local mysound = CreateSound( LocalPlayer(), "ambient/alarms/alarm_citizen_loop1.wav" )
+		
+		timer.Simple( 0.1, function() 
+			local mysound = CreateSound( LocalPlayer(), "rastasafari_countdown.mp3" )
 			mysound:Play()
-			
-			timer.Simple( 60, function() mysound:Stop() end )
 		end )
 		
 		timer.Simple( 118, function() 
