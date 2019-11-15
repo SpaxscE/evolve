@@ -75,7 +75,9 @@ if ( SERVER ) then
 	function PLUGIN:InitPostEntity()
 		for uid, data in pairs( evolve.PlayerInfo ) do
 			if ( evolve:IsBanned( uid ) ) then
-				game.ConsoleCommand( "banid " .. ( data.BanEnd - os.time() ) / 60 .. " " .. data.SteamID .. "\n" )
+				if data.SteamID then
+					game.ConsoleCommand( "banid " .. ( data.BanEnd - os.time() ) / 60 .. " " .. data.SteamID .. "\n" )
+				end
 			end
 		end
 	end
