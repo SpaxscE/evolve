@@ -19,14 +19,15 @@ function PLUGIN:Call( ply, args )
 			if ply:EV_IsAdmin() or ply:EV_GetRank() ~= pl:EV_GetRank() or ply == pl then
 				players[#players+1] = pl
 				
+				pl:SetNWBool( "EV_GodMode", not enabled ) 
+				pl:SetNWBool( "EV_PVPMode", enabled ) 
+				
 				if enabled then 
-					pl:GodDisable() 
 					pl:Spawn()
+					pl:GodDisable() 
 				else 
 					pl:GodEnable()
 				end
-				pl:SetNWBool( "EV_GodMode", not enabled ) 
-				pl:SetNWBool( "EV_PVPMode", enabled ) 
 			end
 		end
 				
