@@ -1044,19 +1044,22 @@ if ( SERVER ) then
 			if ( info.BanEnd and ( info.BanEnd > os.time() or info.BanEnd == 0 ) ) then
 				local time = info.BanEnd - os.time()
 				if ( info.BanEnd == 0 ) then time = 0 end
-				net.Start("EV_BanEntry")
-					
-					net.WriteString(tostring(uniqueid))
-					net.WriteString(info.Nick)
-					net.WriteString(info.SteamID)
-					net.WriteString(info.BanReason)
-					net.WriteString(evolve:GetProperty(info.BanAdmin, "Nick") or "Console")
-					net.WriteUInt(time, 32)
-					
-				if ply == nil then
-					net.Broadcast()
-				else
-					net.Send(ply)
+				
+				if isstring( info.SteamID ) then
+					net.Start("EV_BanEntry")
+						
+						net.WriteString(tostring(uniqueid))
+						net.WriteString( isstring( info.Nick ) and info.Nick or "nick invalid" )
+						net.WriteString( info.SteamID )
+						net.WriteString( isstring( info.BanReason ) and info.BanReason or "none" )
+						net.WriteString(evolve:GetProperty(info.BanAdmin, "Nick") or "Console")
+						net.WriteUInt(time, 32)
+						
+					if ply == nil then
+						net.Broadcast()
+					else
+						net.Send(ply)
+					end
 				end
 			end
 		end
