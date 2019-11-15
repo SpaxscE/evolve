@@ -14,6 +14,7 @@ function PLUGIN:Call( ply, args )
 	if ( ply:EV_HasPrivilege( "God" ) ) then
 		local players = {}
 		local enabled = ( tonumber( args[ #args ] ) or 1 ) > 0
+		local Restricted = false
 		
 		for _, pl in ipairs( evolve:FindPlayer( args, ply, true ) ) do
 			if ply:EV_IsAdmin() or ply:EV_GetRank() ~= pl:EV_GetRank() or ply == pl then
@@ -21,7 +22,8 @@ function PLUGIN:Call( ply, args )
 				
 				if pl:GetNWBool( "EV_PVPMode", false ) then
 					if enabled then 
-						pl:PrintMessage( HUD_PRINTTALK, "God is restricted in PVP-Mode" )
+						evolve:Notify( pl, evolve.colors.red, "God is restricted in PVP-Mode!" )
+						Restricted = true
 					end
 					pl:GodDisable()
 					pl:SetNWBool( "EV_GodMode", false )
@@ -49,7 +51,9 @@ function PLUGIN:Call( ply, args )
 				evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has disabled godmode for ", evolve.colors.red, evolve:CreatePlayerList( players ), evolve.colors.white, "." )
 			end
 		else
-			evolve:Notify( ply, evolve.colors.red, evolve.constants.noplayers )
+			if not Restricted then
+				evolve:Notify( ply, evolve.colors.red, evolve.constants.noplayers )
+			end
 		end
 	else
 		evolve:Notify( ply, evolve.colors.red, evolve.constants.notallowed )

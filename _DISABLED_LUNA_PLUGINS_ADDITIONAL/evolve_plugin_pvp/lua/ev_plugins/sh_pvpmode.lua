@@ -47,7 +47,7 @@ end
 function PLUGIN:PlayerSpawn( ply )
 	if ply:GetNWBool( "EV_PVPMode", false ) then
 		ply:GodDisable()
-		pl:SetNWBool( "EV_GodMode", false ) 
+		ply:SetNWBool( "EV_GodMode", false ) 
 	end
 end
 
@@ -58,7 +58,7 @@ function PLUGIN:PlayerNoClip( ply, desiredNoClipState )
 
 		if PVP then 
 			if SERVER then
-				ply:PrintMessage( HUD_PRINTTALK, "Noclip is restricted in PVP-Mode. Join Buildmode by using !pvp "..ply:GetName().." 0")
+				evolve:Notify( ply, evolve.colors.red, "Noclip is restricted in PVP-Mode. Join Buildmode by using !pvp "..ply:GetName().." 0" )
 			end
 			return false
 		end
