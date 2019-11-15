@@ -20,7 +20,7 @@ function PLUGIN:Call( ply, args )
 				players[#players+1] = pl
 				
 				if enabled then pl:GodDisable() else pl:GodEnable() end
-				pl.EV_GodMode = not enabled
+				pl:SetNWBool( "EV_GodMode", not enabled ) 
 				pl:SetNWBool( "EV_PVPMode", enabled ) 
 			end
 		end
@@ -40,14 +40,14 @@ function PLUGIN:Call( ply, args )
 end
 
 function PLUGIN:PlayerInitialSpawn(ply)
-	ply.EV_GodMode = true
+	pl:SetNWBool( "EV_GodMode", true ) 
 	ply:GodEnable()
 end
 
 function PLUGIN:PlayerSpawn( ply )
 	if ply.EV_PVPMode then
 		ply:GodDisable()
-		ply.EV_GodMode = false
+		pl:SetNWBool( "EV_GodMode", false ) 
 	end
 end
 
@@ -73,9 +73,8 @@ local hide = {
 function PLUGIN:HUDShouldDraw( name )
 	local ply = LocalPlayer()
 	
-	local PVP = ply:GetNWBool( "EV_PVPMode", false ) 
-	
-	if PVP then return end
+	if ply:GetNWBool( "EV_PVPMode", false )  then return end
+	if not ply:GetNWBool( "EV_GodMode", false ) then return end
 	
 	if hide[ name ] then return false end
 end

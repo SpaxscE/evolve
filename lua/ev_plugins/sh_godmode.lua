@@ -24,7 +24,8 @@ function PLUGIN:Call( ply, args )
 						pl:PrintMessage( HUD_PRINTTALK, "God is restricted in PVP-Mode" )
 					end
 					pl:GodDisable()
-					pl.EV_GodMode = false
+					pl:SetNWBool( "EV_GodMode", false )
+					
 					for k, v in pairs( players ) do
 						if v == pl then players[k] = nil end
 					end
@@ -36,7 +37,7 @@ function PLUGIN:Call( ply, args )
 						pl:GodDisable()
 					end
 					
-					pl.EV_GodMode = enabled
+					pl:SetNWBool( "EV_GodMode", enabled )
 				end
 			end
 		end
@@ -56,7 +57,7 @@ function PLUGIN:Call( ply, args )
 end
 
 function PLUGIN:PlayerSpawn( ply )
-	if ( ply.EV_GodMode ) then ply:GodEnable() end
+	if ply:GetNWBool( "EV_GodMode", false ) then ply:GodEnable() end
 end
 
 function PLUGIN:Menu( arg, players )
