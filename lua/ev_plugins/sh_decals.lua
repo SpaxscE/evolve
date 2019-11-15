@@ -13,6 +13,9 @@ function PLUGIN:Call( ply, args )
 	if ( ply:EV_HasPrivilege( "Decal cleanup" ) ) then
 		evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has cleaned up the decals." )
 		
+		RunConsoleCommand("g_ragdoll_maxcount", 0 )
+		timer.Simple(2, function() RunConsoleCommand("g_ragdoll_maxcount", 32 ) end )
+		
 		for _, pl in ipairs( player.GetAll() ) do
 			pl:ConCommand( "r_cleardecals" )
 		end
