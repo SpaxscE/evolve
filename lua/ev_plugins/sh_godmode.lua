@@ -19,8 +19,25 @@ function PLUGIN:Call( ply, args )
 			if ply:EV_IsAdmin() or ply:EV_GetRank() ~= pl:EV_GetRank() or ply == pl then
 				players[#players+1] = pl
 				
-				if ( enabled ) then pl:GodEnable() else pl:GodDisable() end
-				pl.EV_GodMode = enabled
+				if pl:GetNWBool( "EV_PVPMode", false ) then
+					if enabled then 
+						pl:PrintMessage( HUD_PRINTTALK, "God is restricted in PVP-Mode" )
+					end
+					pl:GodDisable()
+					pl.EV_GodMode = false
+					for k, v in pairs( players ) do
+						if v == pl then players[k] = nil end
+					end
+				else
+					
+					if enabled then 
+						pl:GodEnable()
+					else 
+						pl:GodDisable()
+					end
+					
+					pl.EV_GodMode = enabled
+				end
 			end
 		end
 				
