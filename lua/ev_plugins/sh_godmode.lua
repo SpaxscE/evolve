@@ -19,28 +19,14 @@ function PLUGIN:Call( ply, args )
 		for _, pl in ipairs( evolve:FindPlayer( args, ply, true ) ) do
 			if ply:EV_IsAdmin() or ply:EV_GetRank() ~= pl:EV_GetRank() or ply == pl then
 				players[#players+1] = pl
-				
-				if pl:GetNWBool( "EV_PVPMode", false ) then
-					if enabled then 
-						evolve:Notify( pl, evolve.colors.red, "God is restricted in PVP-Mode!" )
-						Restricted = true
-					end
+
+				if enabled then 
+					pl:GodEnable()
+				else 
 					pl:GodDisable()
-					pl:SetNWBool( "EV_GodMode", false )
-					
-					for k, v in pairs( players ) do
-						if v == pl then players[k] = nil end
-					end
-				else
-					
-					if enabled then 
-						pl:GodEnable()
-					else 
-						pl:GodDisable()
-					end
-					
-					pl:SetNWBool( "EV_GodMode", enabled )
 				end
+				
+				pl:SetNWBool( "EV_GodMode", enabled )
 			end
 		end
 				
@@ -51,9 +37,7 @@ function PLUGIN:Call( ply, args )
 				evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has disabled godmode for ", evolve.colors.red, evolve:CreatePlayerList( players ), evolve.colors.white, "." )
 			end
 		else
-			if not Restricted then
-				evolve:Notify( ply, evolve.colors.red, evolve.constants.noplayers )
-			end
+			evolve:Notify( ply, evolve.colors.red, evolve.constants.noplayers )
 		end
 	else
 		evolve:Notify( ply, evolve.colors.red, evolve.constants.notallowed )

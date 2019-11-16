@@ -22,8 +22,9 @@ function PLUGIN:Call( ply, args )
 				pl:SetNWBool( "EV_GodMode", not enabled ) 
 				pl:SetNWBool( "EV_PVPMode", enabled ) 
 				
+				pl:Spawn()
+				
 				if enabled then 
-					pl:Spawn()
 					pl:GodDisable() 
 				else 
 					pl:GodEnable()
@@ -59,6 +60,15 @@ function PLUGIN:PlayerSpawn( ply )
 			ply:StripWeapons()
 
 			ply:SetArmor( 100 )
+			
+			ply:GiveAmmo( 150,	"Pistol", 		true )
+			ply:GiveAmmo( 270,	"SMG1", 		true )
+			ply:GiveAmmo( 5,	"grenade", 		true )
+			ply:GiveAmmo( 30,	"Buckshot", 	true )
+			ply:GiveAmmo( 12,	"357", 			true )
+			ply:GiveAmmo( 6,	"XBowBolt", 	true )
+			ply:GiveAmmo( 3,	"AR2AltFire", 	true )
+			ply:GiveAmmo( 30,	"AR2", 			true )
 			
 			ply:Give( "weapon_crowbar" )
 			ply:Give( "weapon_pistol" )
