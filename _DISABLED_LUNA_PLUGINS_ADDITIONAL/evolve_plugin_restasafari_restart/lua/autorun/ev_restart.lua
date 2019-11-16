@@ -4,7 +4,12 @@ if SERVER then
 	net.Receive( "GetServerDeadTime", function( len, ply )
 		local TimeDead = 18000
 		local Time = os.time()
-		local ServerDeadTime = CurTime() + (TimeDead - (os.date( "%H", Time ) * 360 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )))
+		local TimeSeconds = os.date( "%H", Time ) * 3600 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )
+		local ServerDeadTime = CurTime() + (TimeDead - TimeSeconds)
+		
+		if TimeSeconds > TimeDead then
+			ServerDeadTime = CurTime() + (86400 - TimeSeconds) + TimeDead
+		end
 		
 		net.Start("GetServerDeadTime")
 			net.WriteFloat( ServerDeadTime )
