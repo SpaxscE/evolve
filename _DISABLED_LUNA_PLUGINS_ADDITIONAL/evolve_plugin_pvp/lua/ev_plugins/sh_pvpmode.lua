@@ -60,15 +60,6 @@ function PLUGIN:PlayerSpawn( ply )
 
 			ply:SetArmor( 100 )
 			
-			ply:GiveAmmo( 256,	"Pistol", 		true )
-			ply:GiveAmmo( 256,	"SMG1", 		true )
-			ply:GiveAmmo( 5,	"grenade", 		true )
-			ply:GiveAmmo( 64,	"Buckshot", 	true )
-			ply:GiveAmmo( 32,	"357", 			true )
-			ply:GiveAmmo( 32,	"XBowBolt", 	true )
-			ply:GiveAmmo( 6,	"AR2AltFire", 	true )
-			ply:GiveAmmo( 100,	"AR2", 			true )
-
 			ply:Give( "weapon_crowbar" )
 			ply:Give( "weapon_pistol" )
 			ply:Give( "weapon_smg1" )
@@ -90,7 +81,7 @@ function PLUGIN:PlayerNoClip( ply, desiredNoClipState )
 
 		if PVP then 
 			if SERVER then
-				evolve:Notify( ply, evolve.colors.red, "Noclip is restricted in PVP-Mode. Join Buildmode by using !pvp "..ply:GetName().." 0" )
+				evolve:Notify( ply, evolve.colors.red, "Noclip is restricted in PVP-Mode." )
 			end
 			return false
 		end
