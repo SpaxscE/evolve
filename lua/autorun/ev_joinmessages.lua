@@ -5,17 +5,23 @@ if CLIENT then
 
 	net.Receive( "join_n_leave_msg", function( length )
 		local name = net.ReadString()
-		local mode = net.ReadString()
 		
 		surface.PlaySound("garrysmod/ui_hover.wav")
 		
-		if mode == "join" then
-			chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," is",Color(255,62,62,255)," joining ",Color(255, 255, 255),"the server!")
-			
-		elseif mode == "disconnect" then
+		chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," is",Color(255,62,62,255)," joining ",Color(255, 255, 255),"the server!")
+	end )
+	
+	gameevent.Listen( "player_disconnect" )
+	hook.Add( "player_disconnect", "player_disconnect_example", function( data )
+		local name = data.name
+		local steamid = data.networkid
+		local id = data.userid
+		local bot = data.bot
+		local reason = data.reason
+
+		surface.PlaySound("garrysmod/ui_hover.wav")
 		
-			chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," has",Color(255,62,62,255)," left ",Color(255, 255, 255),"the server!")
-		end
+		chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," has",Color(255,62,62,255)," left ",Color(255, 255, 255),"the server! ("..reason..")")
 	end )
 end
 
@@ -25,16 +31,7 @@ if SERVER then
 	local function PlyConnectMSG( name )
 		net.Start( "join_n_leave_msg" )
 			net.WriteString( name )
-			net.WriteString( "join" )
 		net.Broadcast()
 	end
 	hook.Add( "PlayerConnect", "PlyConnectMSG", PlyConnectMSG )
-
-	local function PlyDisconnectMSG( ply )
-		net.Start( "join_n_leave_msg" )
-			net.WriteString( ply:GetName() )
-			net.WriteString( "disconnect" )
-		net.Broadcast()
-	end
-	hook.Add( "PlayerDisconnected", "PlyDisconnectMSG", PlyDisconnectMSG )
 end
