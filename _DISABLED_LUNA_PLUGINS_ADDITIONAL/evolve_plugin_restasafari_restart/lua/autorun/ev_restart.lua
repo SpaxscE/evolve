@@ -2,7 +2,7 @@ if SERVER then
 	util.AddNetworkString("GetServerDeadTime")
 	
 	net.Receive( "GetServerDeadTime", function( len, ply )
-		local TimeDead = 18080
+		local TimeDead = 18065
 		local Time = os.time()
 		local TimeSeconds = os.date( "%H", Time ) * 3600 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )
 		local ServerDeadTime = CurTime() + (TimeDead - TimeSeconds)
