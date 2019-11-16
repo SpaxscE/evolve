@@ -113,10 +113,7 @@ hook.Add("HUDPaint", "restart_message", function()
 	if not OnFirst then
 		OnFirst = true
 		
-		timer.Simple( 0.1, function() 
-			local mysound = CreateSound( LocalPlayer(), "rastasafari_countdown.mp3" )
-			mysound:Play()
-		end )
+		surface.PlaySound( "rastasafari_countdown.mp3" ) 
 		
 		timer.Simple( 118, function() 
 			surface.PlaySound( "vo/citadel/gman_exit10.wav" ) 
