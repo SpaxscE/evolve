@@ -121,6 +121,7 @@
 						<li>!votekick *name* - votekick a player</li>
 						<li>!rtd - roll the dice</li>
 						<li>!content - show workshop collection</li>
+						<li>!motd - show motd</li>
 					</ol>
 				</div>
 			</div>
