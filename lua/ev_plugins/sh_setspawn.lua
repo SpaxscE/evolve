@@ -11,11 +11,11 @@ function PLUGIN:Call( ply, args )
 		if not ply.EV_SpawnPos then
 			ply.EV_SpawnPos = ply:GetPos()
 			
-			evolve:Notify( ply, evolve.colors.white, "new spawnpoint enabled" )
+			evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has ", evolve.colors.red, "set", evolve.colors.white, " a new spawnpoint" )
 		else
 			ply.EV_SpawnPos = nil
 			
-			evolve:Notify( ply, evolve.colors.white, "spawnpoint disabled" )
+			evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has ", evolve.colors.red, "disabled", evolve.colors.white, " his/her spawnpoint" )
 		end
 	else
 		evolve:Notify( ply, evolve.colors.red, evolve.constants.notallowed )
