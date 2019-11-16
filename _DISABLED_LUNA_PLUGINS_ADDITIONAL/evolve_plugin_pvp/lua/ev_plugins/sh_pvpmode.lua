@@ -58,6 +58,8 @@ function PLUGIN:PlayerSpawn( ply )
 			if not IsValid( ply ) then return end
 			ply:StripWeapons()
 
+			ply:SetArmor( 100 )
+			
 			ply:GiveAmmo( 256,	"Pistol", 		true )
 			ply:GiveAmmo( 256,	"SMG1", 		true )
 			ply:GiveAmmo( 5,	"grenade", 		true )
