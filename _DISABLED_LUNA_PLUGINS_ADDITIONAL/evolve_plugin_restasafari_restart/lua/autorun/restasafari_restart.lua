@@ -28,7 +28,7 @@ if SERVER then
 			else
 				local DTime = SavedDeadTime - CurTime()
 
-				if DTime <= 0 and DTime > -60 then
+				if DTime <= 0 and DTime > -5 then
 					RunConsoleCommand("_restart","")
 				end
 			end
