@@ -1,8 +1,9 @@
 if SERVER then 
 	util.AddNetworkString("GetServerDeadTime")
 	
+	local TimeDead = 18000
+	
 	net.Receive( "GetServerDeadTime", function( len, ply )
-		local TimeDead = 18065
 		local Time = os.time()
 		local TimeSeconds = os.date( "%H", Time ) * 3600 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )
 		local ServerDeadTime = CurTime() + (TimeDead - TimeSeconds)
@@ -16,6 +17,24 @@ if SERVER then
 		net.Send( ply )
 	end)
 	
+	local SavedDeadTime
+	hook.Add("Think","sheduled_restart", 
+		function()
+			if not SavedDeadTime then
+				local Time = os.time()
+				local TimeSeconds = os.date( "%H", Time ) * 3600 + os.date( "%M", Time ) * 60 + os.date( "%S", Time )
+				SavedDeadTime = CurTime() + (TimeDead - TimeSeconds)
+				
+			else
+				local DTime = SavedDeadTime - CurTime()
+
+				if DTime <= 0 and DTime > -60 then
+					RunConsoleCommand("_restart","")
+				end
+			end
+		end
+	)
+
 	return
 end
 
@@ -57,6 +76,24 @@ surface.CreateFont( "RESTARTER_TIME", {
 	outline = false,
 } )
 
+surface.CreateFont( "RESTARTER_TIME_SMALL", {
+	font = "Verdana",
+	extended = false,
+	size = 15,
+	weight = 2000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
+} )
+
 local dramatic = {
 	[1] = { Sound = "vo/npc/male01/gethellout.wav", Text = "SERVER RESTARTING!"},
 	[2] = { Sound = "vo/npc/female01/gethellout.wav", Text = "SERVER RESTARTING!"},
@@ -69,12 +106,9 @@ local dramatic = {
 	[9] = { Sound = "vo/npc/female01/uhoh.wav", Text = "SERVER RESTART INCOMING!"},
 	[10] = { Sound = "vo/npc/male01/uhoh.wav", Text = "SERVER RESTART INCOMING!"},
 	[11] = { Sound = "vo/ravenholm/exit_hurry.wav", Text = "HURRY WHILE I HOLD THE GATE!"},
-	[12] = { Sound = "vo/ravenholm/exit_hurry.wav", Text = "HURRY WHILE I HOLD THE GATE!"},
-	[13] = { Sound = "vo/ravenholm/exit_hurry.wav", Text = "HURRY WHILE I HOLD THE GATE!"},
-	[14] = { Sound = "vo/ravenholm/exit_hurry.wav", Text = "HURRY WHILE I HOLD THE GATE!"},
-	[15] = { Sound = "scientist/c1a3_sci_silo1a.wav", Text = "SERVER RESTART INCOMING!"},
-	[16] = { Sound = "scientist/c1a3_sci_silo2a.wav", Text = "SAVE YOUR SHIT!"},
-	[17] = { Sound = "scientist/c3a2_sci_fool.wav", Text = "DO PANIC! SERVER IS RESTARTING!"},
+	[12] = { Sound = "scientist/c1a3_sci_silo1a.wav", Text = "SERVER RESTART INCOMING!"},
+	[13] = { Sound = "scientist/c1a3_sci_silo2a.wav", Text = "SAVE YOUR SHIT!"},
+	[14] = { Sound = "scientist/c3a2_sci_fool.wav", Text = "DO PANIC! SERVER IS RESTARTING!"},
 }
 
 local ServerDeadTime 
@@ -102,7 +136,21 @@ hook.Add("HUDPaint", "restart_message", function()
 	
 	local DTime = ServerDeadTime - CTime
 	
-	if DTime > 121 or DTime < 0 then 
+	local srcW = ScrW()
+	local srcH = ScrH()
+
+	if DTime > 121 or DTime < -60 then 
+		local hours = string.format("%02.f", math.floor(DTime/3600))
+		local mins = string.format("%02.f", math.floor(DTime/60 - (hours*60)))
+		local secs = string.format("%02.f", math.floor(DTime - hours*3600 - mins *60))
+		
+		local n_min =  tonumber(mins)
+		if n_min then
+			local Col = n_min <= 5 and Color(255,255,0,255) or Color(255,255,255,255)
+			
+			draw.SimpleText( hours..":"..mins..":"..secs, "RESTARTER_TIME_SMALL", srcW - 2, 0, Color(255,255,255,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP )
+		end
+		
 		if OnFirst then
 			OnFirst = false
 		end
@@ -120,22 +168,23 @@ hook.Add("HUDPaint", "restart_message", function()
 		end )
 	end
 	
-	local srcW = ScrW()
-	local srcH = ScrH()
-	
 	surface.SetDrawColor( math.abs( math.cos( CurTime() * 3 ) * 100 ),0,0,150 - (DTime / 120) * 130 )
 	surface.DrawRect(0, 0, srcW, srcH)
 	
 	local X = srcW * 0.5
 	local Y = srcH * 0.5
 	
-	draw.SimpleText( "SERVER RESTART IN:", "RESTARTER", X, Y, Color(255,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-	
-	local Sec = math.floor( DTime )
-	local MSec = math.floor( (DTime - Sec) * 1000 )
-	
-	draw.SimpleText( Sec, "RESTARTER_TIME", X, Y, Color(255,0,0,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP )
-	draw.SimpleText( "."..MSec, "RESTARTER_TIME", X, Y, Color(255,0,0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
+	if DTime >= 0 then
+		draw.SimpleText( "SERVER RESTART IN:", "RESTARTER", X, Y, Color(255,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		
+		local Sec = math.floor( DTime )
+		local MSec = math.floor( (DTime - Sec) * 1000 )
+		
+		draw.SimpleText( Sec, "RESTARTER_TIME", X, Y, Color(255,0,0,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP )
+		draw.SimpleText( "."..MSec, "RESTARTER_TIME", X, Y, Color(255,0,0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
+	else
+		draw.SimpleText( "SERVER IS RESTARTING. PLEASE REJOIN IN A FEW MINUTES", "RESTARTER", X, Y, Color(255,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	end
 	
 	if DTime > 5 then
 		if NextPanic < CTime then
