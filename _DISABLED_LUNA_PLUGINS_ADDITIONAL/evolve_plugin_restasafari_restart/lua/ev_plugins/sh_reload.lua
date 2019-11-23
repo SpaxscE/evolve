@@ -12,15 +12,15 @@ PLUGIN.Privileges = { "Map reload" }
 function PLUGIN:Call( ply, args )
 	if ( ply:EV_HasPrivilege( "Map reload" ) ) then
 		if not ev_reloadShed then
-			evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has scheduled a map reload in 120 seconds." )
+			evolve:Notify( evolve.colors.blue, ply:Nick(), evolve.colors.white, " has scheduled a map reload in 60 seconds." )
 			
 			ev_reloadShed = true
 			
 			net.Start("GetServerDeadTime")
-				net.WriteFloat( CurTime() + 120 )
+				net.WriteFloat( CurTime() + 60 )
 			net.Broadcast()
 			
-			timer.Simple( 120, function() 
+			timer.Simple( 60, function() 
 				local saveRequired = false
 				for _, pl in ipairs( player.GetAll() ) do
 					pl:SetProperty( "LastJoin", os.time() )
