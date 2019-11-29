@@ -40,6 +40,8 @@ if CLIENT then
 		
 		sound.PlayURL("http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=" .. text .. "&tl=en", "3d", 
 			function(chan, num, str)
+				ply.soundchannel = chan
+				
 				if IsValid( chan ) then
 					chan:SetPos( ply:GetShootPos() )
 					chan:Play()
@@ -47,4 +49,14 @@ if CLIENT then
 			end
 		)
 	end )
+	
+	function PLUGIN:Think()
+		for _, ply in pairs( player.GetAll() ) do 
+			if IsValid( ply ) then
+				if ply.soundchannel and IsValid( ply.soundchannel ) then
+					ply.soundchannel:SetPos( ply:GetShootPos() )
+				end
+			end
+		end
+	end
 end
