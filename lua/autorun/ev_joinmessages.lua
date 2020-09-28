@@ -5,9 +5,9 @@ if CLIENT then
 
 	net.Receive( "join_n_leave_msg", function( length )
 		local name = net.ReadString()
-		
+
 		surface.PlaySound("garrysmod/ui_hover.wav")
-		
+
 		chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," is",Color(255,62,62,255)," joining ",Color(255, 255, 255),"the server!")
 	end )
 	
@@ -19,19 +19,23 @@ if CLIENT then
 		local bot = data.bot
 		local reason = data.reason
 
-		surface.PlaySound("garrysmod/ui_hover.wav")
-		
-		chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," has",Color(255,62,62,255)," left ",Color(255, 255, 255),"the server! ("..reason..")")
+		if not bot then
+			surface.PlaySound("garrysmod/ui_hover.wav")
+			
+			chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," has",Color(255,62,62,255)," left ",Color(255, 255, 255),"the server! ("..reason..")")
+		end
 	end )
 end
 
 if SERVER then
 	util.AddNetworkString( "join_n_leave_msg" )
 
-	local function PlyConnectMSG( name )
-		net.Start( "join_n_leave_msg" )
-			net.WriteString( name )
-		net.Broadcast()
+	local function PlyConnectMSG( name, ip )
+		if ip ~= "none" then
+			net.Start( "join_n_leave_msg" )
+				net.WriteString( name )
+			net.Broadcast()
+		end
 	end
 	hook.Add( "PlayerConnect", "PlyConnectMSG", PlyConnectMSG )
 end

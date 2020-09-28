@@ -9,6 +9,8 @@ PLUGIN.Author = "Overv"
 PLUGIN.ChatCommand = nil
 
 function PLUGIN:ShowPlayerInfo( ply )
+	if ply:IsBot() then return end
+
 	local first = !ply:GetProperty( "LastJoin" )
 	local lastjoin
 	local lastnick
@@ -63,6 +65,8 @@ function PLUGIN:PlayerInitialSpawn( ply )
 end
 
 function PLUGIN:PlayerSpawn( ply )
+	if ply:IsBot() then return end
+
 	if ( ply.EV_IntroductionPending ) then
 		self:ShowPlayerInfo( ply )
 		ply.EV_IntroductionPending = false
@@ -72,6 +76,8 @@ function PLUGIN:PlayerSpawn( ply )
 end
 
 function PLUGIN:PlayerDisconnected( ply )
+	if ply:IsBot() then return end
+
 	ply:SetProperty( "LastJoin", os.time() )
 	ply:SetProperty( "PlayTime", ply:GetProperty( "PlayTime" ) + math.abs(os.difftime(os.clock(),ply.EV_LastPlaytimeSave)) )
 	
@@ -82,24 +88,25 @@ end
 timer.Create( "EV_PlayTimeSave", 60, 0, function()
 	for _, ply in ipairs( player.GetAll() ) do
         -- Check for bad PlayTime values and set them back to 0, usually only for catching new players spawning with negative values.
-        if(ply:GetProperty( "PlayTime" ) < 0) then
-          ply:SetProperty( "PlayTime", 0)
-        end
-        
-        ply:SetProperty( "LastJoin", os.time() )
-        clock = os.clock()
-        last = ply.EV_LastPlaytimeSave
-        
-        -- When the clock flips negative/positive, we don't want large differences between the old clock value stored in last.
-        if((clock < 0 && last > 0) || (clock > 0 && last < 0)) then 
-          last = os.clock()
-        end
-        
-        -- Set the PlayTime value to the absoulte difference in clock times.
-        ply:SetProperty( "PlayTime", ply:GetProperty( "PlayTime" ) + math.abs(os.difftime(clock,last)) )
-        ply.EV_LastPlaytimeSave = os.clock()
-    end
-    
+	if not ply:IsBot() then
+		if(ply:GetProperty( "PlayTime" ) < 0) then
+		  ply:SetProperty( "PlayTime", 0)
+		end
+		
+		ply:SetProperty( "LastJoin", os.time() )
+		clock = os.clock()
+		last = ply.EV_LastPlaytimeSave
+		
+		-- When the clock flips negative/positive, we don't want large differences between the old clock value stored in last.
+		if((clock < 0 && last > 0) || (clock > 0 && last < 0)) then 
+		  last = os.clock()
+		end
+		
+		-- Set the PlayTime value to the absoulte difference in clock times.
+		ply:SetProperty( "PlayTime", ply:GetProperty( "PlayTime" ) + math.abs(os.difftime(clock,last)) )
+		ply.EV_LastPlaytimeSave = os.clock()
+	    end
+	end
     evolve:CommitProperties()
 end )
 
