@@ -33,7 +33,7 @@ function PLUGIN:HUDPaint()
 end
 
 function PLUGIN:ChatTextChanged( str )
-	if ( string.Left( str, 1 ) == "/" or string.Left( str, 1 ) == "!" or string.Left( str, 1 ) == "@" ) then
+	if ( string.Left( str, 1 ) == "!" or string.Left( str, 1 ) == "@" ) then
 		local com = string.sub( str, 2, ( string.find( str, " " ) or ( #str + 1 ) ) - 1 )
 		self.Suggestions = {}
 		

@@ -9,7 +9,7 @@ PLUGIN.Author = "Overv"
 PLUGIN.Privileges = { "See chat tags" }
 
 function PLUGIN:OnPlayerChat( ply, txt, teamchat, dead )
-	if ( table.Count( evolve.ranks ) > 0 and GAMEMODE.IsSandboxDerived ) then
+	if table.Count( evolve.ranks ) > 0 then --and GAMEMODE.IsSandboxDerived ) then
 		local tab = {}
 
 		if ( dead ) then
