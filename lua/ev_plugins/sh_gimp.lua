@@ -45,12 +45,32 @@ end
 
 -- The messages
 PLUGIN.GimpMessages = {
-	"I like sucking my own dick",
-	"Blow your load, then hit the road",
-	"Thanks, lol. I thought you would never ungimp me",
-	"Cure the erection then end the connection",
-	"Is it difficult to do an abortion by yourself at home?",
-	"Hitler did nothing wrong!",
+	"How do you fly?",
+	"CAPS LOCK IS CRUISE CONTROL FOR COOL",
+	"Wut",
+	"What",
+	"Wat",
+	"Whut",
+	"Lol",
+	"Lolz",
+	"Lul",
+	"Lulz",
+	"Blah, blah, blah...",
+	"Words, words, words...",
+	"The cake is a LIE!",
+	"GIMME CAKE!",
+	"Admunz r teh pwn!",
+	"I love carpet",
+	"I love desk",
+	"I love lamp",
+	"I love cieling",
+	"Are you garry?",
+	"Mmmmmkay",
+	"I dun da sumz, we can haz nuder cheezburgah",
+	"I love it when teh admun physgunz meh!",
+	"I love bein gimped by teh admun!",
+	"MAI BOI",
+	"ACTAUL",
 }
 
 function PLUGIN:PlayerSay( ply, Msg )
