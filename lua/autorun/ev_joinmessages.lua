@@ -10,7 +10,7 @@ if CLIENT then
 
 		chat.AddText(Color(98,176,255),"",Color(98,176,255),name,Color(255, 255, 255)," is",Color(255,62,62,255)," joining ",Color(255, 255, 255),"the server!")
 	end )
-	
+
 	gameevent.Listen( "player_disconnect" )
 	hook.Add( "player_disconnect", "player_disconnect_example", function( data )
 		local name = data.name
